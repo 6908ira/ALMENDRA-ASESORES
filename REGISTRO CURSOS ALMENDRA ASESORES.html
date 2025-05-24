@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inmobiliaria Almendra Asesores - Cursos y Créditos</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        /* Estilos generales del cuerpo */
+        body {
+            font-family: 'Inter', sans-serif; /* Fuente más moderna */
+            background-color: #eef2f7; /* Fondo más suave */
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        /* Estilos del encabezado de la página */
+        .header {
+            background-color: #007bff; /* Azul rey */
+            color: white;
+            padding: 25px 0; /* Más padding */
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15); /* Sombra más pronunciada */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            /* Eliminado position: relative; ya que el botón de WhatsApp ya no está dentro */
+        }
+
+        /* En pantallas más grandes, alinea el logo y el título en una fila */
+        @media (min-width: 768px) {
+            .header {
+                flex-direction: row;
+                justify-content: center;
+                gap: 30px; /* Más espacio entre elementos */
+                padding: 25px;
+            }
+            .header h1 {
+                margin: 0;
+            }
+        }
+
+        /* Estilos del título principal en el encabezado */
+        .header h1 {
+            font-size: 2.8em; /* Tamaño de fuente más grande */
+            margin: 15px 0; /* Margen para separar del logo en vista móvil */
+            font-weight: 700; /* Negrita */
+        }
+        /* Estilos para el logo en el encabezado */
+        .header .logo {
+            max-width: 160px; /* Un poco más grande */
+            height: auto;
+            border-radius: 10px; /* Bordes más redondeados */
+            border: 3px solid white; /* Borde más grueso */
+            transition: transform 0.3s ease; /* Transición suave al pasar el ratón */
+        }
+        .header .logo:hover {
+            transform: scale(1.05); /* Efecto de zoom al pasar el ratón */
+        }
+        /* Contenedor principal de la aplicación */
+        .container {
+            max-width: 950px; /* Más ancho */
+            margin: 40px auto; /* Más margen */
+            background: #fff;
+            padding: 40px; /* Más padding */
+            border-radius: 12px; /* Bordes más redondeados */
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1); /* Sombra más suave y extendida */
+        }
+        /* Estilos para los subtítulos de las secciones */
+        h2 {
+            color: #007bff; /* Azul rey */
+            border-bottom: 2px solid #e0e0e0; /* Borde más suave */
+            padding-bottom: 15px; /* Más padding */
+            margin-top: 40px; /* Más margen superior */
+            font-size: 2em; /* Tamaño de fuente más grande */
+            font-weight: 600; /* Semi-negrita */
+        }
+        /* Estilos para cada sección de contenido */
+        .section {
+            margin-bottom: 25px; /* Más margen inferior */
+        }
+        /* Estilos para los párrafos dentro de las secciones */
+        .section p {
+            margin-bottom: 12px;
+            font-size: 1.1em;
+        }
+        /* Estilos para las listas de valores */
+        .section ul {
+            list-style: none; /* Quita los puntos de la lista */
+            padding: 0;
+            margin-top: 15px;
+        }
+        .section ul li {
+            background-color: #f8faff; /* Fondo suave para cada item */
+            border-left: 4px solid #007bff; /* Borde izquierdo de color */
+            margin-bottom: 10px;
+            padding: 10px 15px;
+            border-radius: 5px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+            font-size: 1.05em;
+        }
+        .section ul li strong {
+            color: #0056b3; /* Color más oscuro para el texto en negrita */
+        }
+
+        /* Grupo de formulario para cada campo */
+        .form-group {
+            margin-bottom: 20px; /* Más margen inferior */
+            position: relative; /* Para posicionar los iconos */
+        }
+        /* Etiquetas de los campos del formulario */
+        label {
+            display: block;
+            margin-bottom: 8px; /* Más margen inferior */
+            font-weight: bold;
+            color: #007bff; /* Color azul para las etiquetas */
+            display: flex;
+            align-items: center;
+            gap: 8px; /* Espacio entre el icono y el texto */
+        }
+        /* Estilo para los iconos dentro de las etiquetas */
+        label .icon {
+            width: 20px;
+            height: 20px;
+            fill: #007bff; /* Color del icono */
+        }
+        /* Estilo para todos los campos de entrada y selección */
+        input[type="text"],
+        input[type="date"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="file"], /* Estilo para el input de tipo file */
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px 15px; /* Más padding */
+            border: 1px solid #cce0ff; /* Borde más suave */
+            border-radius: 6px; /* Bordes más redondeados */
+            box-sizing: border-box;
+            font-size: 1.05em;
+            transition: all 0.3s ease; /* Transición suave para el enfoque */
+            background-color: #fdfdff; /* Fondo ligeramente diferente */
+        }
+        input[type="text"]:focus,
+        input[type="date"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        input[type="file"]:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #0056b3; /* Borde más oscuro al enfocar */
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25); /* Sombra de enfoque */
+            outline: none; /* Elimina el contorno por defecto */
+        }
+        /* Estilo específico para el área de texto */
+        textarea {
+            resize: vertical;
+            min-height: 100px; /* Más altura mínima */
+        }
+        /* Estilo para los botones */
+        button {
+            background-color: #007bff; /* Azul rey */
+            color: white;
+            padding: 14px 25px; /* Más padding */
+            border: none;
+            border-radius: 8px; /* Bordes más redondeados */
+            cursor: pointer;
+            font-size: 1.1em; /* Tamaño de fuente más grande */
+            font-weight: 600; /* Semi-negrita */
+            margin-right: 15px; /* Más margen derecho */
+            margin-top: 20px; /* Más margen superior */
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; /* Transiciones suaves */
+            box-shadow: 0 4px 10px rgba(0,123,255,0.2); /* Sombra para el botón */
+        }
+        /* Efecto hover para los botones */
+        button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px); /* Pequeño levantamiento */
+            box-shadow: 0 6px 15px rgba(0,123,255,0.3); /* Sombra más grande al pasar el ratón */
+        }
+        /* Efecto active para los botones */
+        button:active {
+            transform: translateY(0); /* Vuelve a la posición original */
+            box-shadow: 0 2px 5px rgba(0,123,255,0.2); /* Sombra más pequeña al hacer click */
+        }
+        /* Estilo para el mensaje de éxito */
+        .message {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            padding: 15px; /* Más padding */
+            border-radius: 8px; /* Bordes más redondeados */
+            margin-top: 25px; /* Más margen superior */
+            text-align: center;
+            font-weight: bold;
+            display: none; /* Oculto por defecto */
+            animation: fadeIn 0.5s forwards; /* Animación de aparición */
+        }
+        /* Estilo para el mensaje de error/advertencia */
+        .message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-color: #f5c6cb;
+        }
+        /* Estilos del pie de página */
+        .footer {
+            text-align: center;
+            margin-top: 50px; /* Más margen superior */
+            padding: 30px; /* Más padding */
+            background-color: #007bff; /* Azul rey */
+            color: white;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.15); /* Sombra más pronunciada */
+        }
+        /* Estilos para los iconos de redes sociales en el pie de página */
+        .social-icons a {
+            display: inline-block;
+            margin: 0 15px; /* Más margen entre iconos */
+            font-size: 32px; /* Iconos más grandes */
+            color: white;
+            text-decoration: none;
+            transition: transform 0.3s ease, color 0.3s ease; /* Transiciones suaves */
+        }
+        /* Efecto hover para los iconos de redes sociales */
+        .social-icons a:hover {
+            color: #cce0ff; /* Color más claro al pasar el ratón */
+            transform: translateY(-3px) scale(1.1); /* Pequeño levantamiento y zoom */
+        }
+        /* Estilos para las imágenes de los iconos de redes sociales (si se usan) */
+        .social-icons img {
+            width: 38px; /* Tamaño de imagen más grande */
+            height: 38px;
+            vertical-align: middle;
+        }
+        /* Estilos para el botón de WhatsApp */
+        .whatsapp-button {
+            background-color: #25D366; /* Verde de WhatsApp */
+            color: white;
+            padding: 12px 20px;
+            border-radius: 30px; /* Más redondeado */
+            text-decoration: none;
+            display: block; /* Ahora es un bloque para centrarlo */
+            margin: 20px auto; /* Centra el botón horizontalmente */
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.05em;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px rgba(37,211,102,0.3); /* Sombra para el botón */
+            /* Eliminado position: absolute, top, right */
+        }
+        /* Efecto hover para el botón de WhatsApp */
+        .whatsapp-button:hover {
+            background-color: #1DA851;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(37,211,102,0.4);
+        }
+        /* Efecto active para el botón de WhatsApp */
+        .whatsapp-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(37,211,102,0.2);
+        }
+        .whatsapp-button img {
+            margin-right: 10px; /* Más margen */
+            width: 22px; /* Icono más grande */
+            height: 22px;
+        }
+
+        /* Animación para los mensajes */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="https://raw.githubusercontent.com/your-github-username/your-repo-name/main/logo.png" alt="Inmobiliaria Almendra Asesores Logo" class="logo">
+        <h1>INMOBILIARIA ALMENDRA ASESORES</h1>
+        </div>
+
+    <a href="https://wa.me/5219981720154" target="_blank" class="whatsapp-button">
+        <img src="https://img.icons8.com/ios-filled/24/ffffff/whatsapp.png" alt="Icono de WhatsApp"> Contacto WhatsApp
+    </a>
+
+    <div class="container">
+        <div class="section">
+            <h2>¿Quiénes Somos?</h2>
+            <p><strong>INMOBILIARIA ALMENDRA ASESORES</strong> es una empresa dedicada a brindar soluciones integrales en el sector inmobiliario. Contamos con un equipo de expertos comprometidos con la excelencia y la satisfacción de nuestros clientes, ofreciendo asesoría personalizada para la compra, venta o alquiler de propiedades, así como una amplia gama de cursos y capacitaciones.</p>
+        </div>
+
+        <div class="section">
+            <h2>Nuestra Misión</h2>
+            <p>Ser la empresa líder en asesoría inmobiliaria y capacitación, generando valor y confianza a nuestros clientes a través de un servicio ético, profesional e innovador.</p>
+        </div>
+
+        <div class="section">
+            <h2>Nuestra Visión</h2>
+            <p>Transformar el mercado inmobiliario, empoderando a individuos y empresas con el conocimiento y las herramientas necesarias para tomar decisiones informadas y exitosas en el ámbito de los bienes raíces.</p>
+        </div>
+
+        <div class="section">
+            <h2>Nuestros Valores</h2>
+            <ul>
+                <li><strong>Profesionalismo:</strong> Actuamos con ética y conocimiento experto.</li>
+                <li><strong>Integridad:</strong> Transparencia y honestidad en cada operación.</li>
+                <li><strong>Compromiso:</strong> Dedicación total a los objetivos de nuestros clientes.</li>
+                <li><strong>Innovación:</strong> Búsqueda constante de nuevas soluciones y metodologías.</li>
+                <li><strong>Servicio:</strong> Orientación al cliente y excelencia en la atención.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Objetivo de Nuestros Cursos</h2>
+            <p>Capacitar a individuos interesados en el sector inmobiliario, proporcionándoles los conocimientos teóricos y prácticos esenciales para desarrollarse profesionalmente, ya sea para adquirir su propia vivienda, gestionar créditos o certificarse como asesores inmobiliarios.</p>
+        </div>
+
+        <hr>
+
+        <h2>Formulario de Inscripción a Cursos</h2>
+        <form id="courseRegistrationForm">
+            <div class="form-group">
+                <label for="regName">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    Nombre Completo:
+                </label>
+                <input type="text" id="regName" required>
+            </div>
+            <div class="form-group">
+                <label for="regDob">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+                    Fecha de Nacimiento:
+                </label>
+                <input type="date" id="regDob" required>
+            </div>
+            <div class="form-group">
+                <label for="courseSelect">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/><path d="M12 8h6"/><path d="M12 12h6"/><path d="M12 16h6"/></svg>
+                    Selecciona el curso al que te inscribes:
+                </label>
+                <select id="courseSelect" required>
+                    <option value="">-- Selecciona un curso --</option>
+                    <option value="creditosInfonavit">Créditos Infonavit</option>
+                    <option value="creditoFovissste">Crédito Fovissste</option>
+                    <option value="certificacionEC0903.02">Certificación EC0903.02</option>
+                    <option value="certificacionEC110.02">Certificación EC110.02</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="courseModality">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                    Modalidad del curso:
+                </label>
+                <select id="courseModality" required>
+                    <option value="">-- Selecciona una modalidad --</option>
+                    <option value="presencial">Presencial</option>
+                    <option value="virtual">Virtual en Zoom</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="regPhone">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-3.07-8.63A2 2 0 0 1 4.11 2H7c.57 0 .98.31 1.14.64l2.25 4.5a1 1 0 0 1-.36 1.1l-1.5 1.5a15.04 15.04 0 0 0 7.07 7.07l1.5-1.5a1 1 0 0 1 1.1-.36l4.5 2.25c.33.16.64.57.64 1.14z"/></svg>
+                    Teléfono (10 dígitos):
+                </label>
+                <input type="tel" id="regPhone" pattern="[0-9]{10}" maxlength="10" required>
+            </div>
+            <div class="form-group">
+                <label for="regEmail">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                    E-mail:
+                </label>
+                <input type="email" id="regEmail" required>
+            </div>
+            <div class="form-group">
+                <label for="regCity">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    Ciudad:
+                </label>
+                <input type="text" id="regCity" required>
+            </div>
+            <div class="form-group">
+                <label for="regState">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Estado:
+                </label>
+                <select id="regState" required>
+                    <option value="">-- Selecciona un estado --</option>
+                    <option value="Aguascalientes">Aguascalientes</option>
+                    <option value="Baja California">Baja California</option>
+                    <option value="Baja California Sur">Baja California Sur</option>
+                    <option value="Campeche">Campeche</option>
+                    <option value="Chiapas">Chiapas</option>
+                    <option value="Chihuahua">Chihuahua</option>
+                    <option value="Coahuila de Zaragoza">Coahuila de Zaragoza</option>
+                    <option value="Colima">Colima</option>
+                    <option value="Ciudad de México">Ciudad de México</option>
+                    <option value="Durango">Durango</option>
+                    <option value="Guanajuato">Guanajuato</option>
+                    <option value="Guerrero">Guerrero</option>
+                    <option value="Hidalgo">Hidalgo</option>
+                    <option value="Jalisco">Jalisco</option>
+                    <option value="México">México</option>
+                    <option value="Michoacán de Ocampo">Michoacán de Ocampo</option>
+                    <option value="Morelos">Morelos</option>
+                    <option value="Nayarit">Nayarit</option>
+                    <option value="Nuevo León">Nuevo León</option>
+                    <option value="Oaxaca">Oaxaca</option>
+                    <option value="Puebla">Puebla</option>
+                    <option value="Querétaro">Querétaro</option>
+                    <option value="Quintana Roo">Quintana Roo</option>
+                    <option value="San Luis Potosí">San Luis Potosí</option>
+                    <option value="Sinaloa">Sinaloa</option>
+                    <option value="Sonora">Sonora</option>
+                    <option value="Tabasco">Tabasco</option>
+                    <option value="Tamaulipas">Tamaulipas</option>
+                    <option value="Tlaxcala">Tlaxcala</option>
+                    <option value="Veracruz de Ignacio de la Llave">Veracruz de Ignacio de la Llave</option>
+                    <option value="Yucatán">Yucatán</option>
+                    <option value="Zacatecas">Zacatecas</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="regComments">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V3a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    Comentarios:
+                </label>
+                <textarea id="regComments" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="regCSF">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><line x1="10" x2="8" y1="9" y2="9"/></svg>
+                    Adjuntar Constancia de Situación Fiscal (CSF):
+                </label>
+                <input type="file" id="regCSF" accept=".pdf,.doc,.docx" required>
+            </div>
+
+            <button type="submit">Generar Inscripción</button>
+            <button type="button" id="exportPdfButton">Exportar Recibo (PDF)</button>
+            <div id="registrationMessage" class="message">
+                ¡Se ha inscrito correctamente!
+            </div>
+            <div id="pdfErrorMessage" class="message error" style="display: none;">
+                Por favor, genera una inscripción primero para exportar el recibo.
+            </div>
+        </form>
+    </div>
+
+    <div class="footer">
+        <h3>Síguenos en nuestras redes:</h3>
+        <div class="social-icons">
+            <a href="https://www.facebook.com/profile.php?id=61574581061016" target="_blank" aria-label="Facebook">
+                <img src="https://img.icons8.com/ios-filled/32/ffffff/facebook-new.png" alt="Facebook">
+            </a>
+            <a href="https://www.instagram.com/almendrairasema/" target="_blank" aria-label="Instagram">
+                <img src="https://img.icons8.com/ios-filled/32/ffffff/instagram-new.png" alt="Instagram">
+            </a>
+            <a href="https://www.linkedin.com/company/InmobiliariaAlmendraAsesores" target="_blank" aria-label="LinkedIn">
+                <img src="https://img.icons8.com/ios-filled/32/ffffff/linkedin.png" alt="LinkedIn">
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Variable global para almacenar los últimos datos de inscripción
+        let lastRegistrationData = null;
+
+        // Función para cargar la librería jsPDF dinámicamente
+        function loadJsPDF(callback) {
+            // Verifica si jsPDF ya está cargado
+            if (typeof window.jsPDF === 'undefined') {
+                const script = document.createElement('script');
+                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+                script.onload = callback; // Ejecuta el callback una vez que el script se haya cargado
+                document.head.appendChild(script);
+            } else {
+                callback(); // Si ya está cargado, ejecuta el callback inmediatamente
+            }
+        }
+
+        // Escucha el evento de envío del formulario de inscripción a cursos
+        document.getElementById('courseRegistrationForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Previene el envío por defecto del formulario
+
+            // Oculta cualquier mensaje de error previo
+            document.getElementById('pdfErrorMessage').style.display = 'none';
+
+            // Captura el nombre del archivo CSF si se adjuntó
+            const csfInput = document.getElementById('regCSF');
+            const csfFileName = csfInput.files.length > 0 ? csfInput.files[0].name : 'No adjuntado';
+
+            // Captura todos los datos del formulario antes de limpiarlo
+            lastRegistrationData = {
+                name: document.getElementById('regName').value,
+                dob: document.getElementById('regDob').value,
+                course: document.getElementById('courseSelect').options[document.getElementById('courseSelect').selectedIndex].text,
+                modality: document.getElementById('courseModality').options[document.getElementById('courseModality').selectedIndex].text,
+                phone: document.getElementById('regPhone').value,
+                email: document.getElementById('regEmail').value,
+                city: document.getElementById('regCity').value,
+                state: document.getElementById('regState').options[document.getElementById('regState').selectedIndex].text,
+                comments: document.getElementById('regComments').value,
+                csfFileName: csfFileName // Guarda el nombre del archivo CSF
+            };
+
+            // Muestra el mensaje de éxito
+            document.getElementById('registrationMessage').style.display = 'block';
+
+            // Limpia el formulario después del envío
+            document.getElementById('courseRegistrationForm').reset();
+
+            // Oculta el mensaje después de unos segundos
+            setTimeout(() => {
+                document.getElementById('registrationMessage').style.display = 'none';
+            }, 5000);
+        });
+
+        // Escucha el evento click del botón "Exportar Recibo (PDF)"
+        document.getElementById('exportPdfButton').addEventListener('click', function() {
+            // Oculta cualquier mensaje de error previo
+            document.getElementById('pdfErrorMessage').style.display = 'none';
+
+            // Verifica si hay datos de inscripción para exportar
+            if (!lastRegistrationData) {
+                document.getElementById('pdfErrorMessage').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('pdfErrorMessage').style.display = 'none';
+                }, 5000);
+                return; // Detiene la ejecución si no hay datos
+            }
+
+            // Carga jsPDF y luego genera el PDF
+            loadJsPDF(function() {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF(); // Crea una nueva instancia de jsPDF
+
+                // Utiliza los datos guardados en lastRegistrationData
+                const { name, dob, course, modality, phone, email, city, state, comments, csfFileName } = lastRegistrationData;
+
+                // Establece el tamaño de fuente para el título
+                doc.setFontSize(18);
+                // Agrega el título al documento
+                doc.text('Recibo de Inscripción al Curso', 105, 20, null, null, 'center');
+
+                // Establece el tamaño de fuente para el contenido
+                doc.setFontSize(12);
+                let y = 40; // Posición inicial en Y para el contenido
+
+                // Función auxiliar para añadir campos al PDF
+                const addField = (label, value) => {
+                    doc.text(`${label}: ${value}`, 20, y);
+                    y += 10; // Incrementa la posición Y para el siguiente campo
+                };
+
+                // Añade todos los campos al PDF
+                addField('Nombre Completo', name);
+                addField('Fecha de Nacimiento', dob);
+                addField('Curso Inscrito', course);
+                addField('Modalidad', modality);
+                addField('Teléfono', phone);
+                addField('E-mail', email);
+                addField('Ciudad', city);
+                addField('Estado', state);
+                if (comments) { // Solo añade comentarios si existen
+                    addField('Comentarios', comments);
+                }
+                addField('CSF Adjuntado', csfFileName); // Añade el nombre del archivo CSF al PDF
+
+                // Guarda el documento PDF con un nombre de archivo
+                doc.save('recibo_inscripcion_curso.pdf');
+            });
+        });
+
+        // Manejo de error para la carga del logo en el encabezado
+        const logoImgHeader = document.querySelector('.header .logo');
+        if (logoImgHeader) {
+            logoImgHeader.onerror = function() {
+                console.error("Error al cargar la imagen del logo del encabezado. Asegúrate de que el enlace de GitHub sea correcto y la imagen exista.");
+                logoImgHeader.style.display = 'none';
+            };
+        }
+    </script>
+</body>
+</html>
